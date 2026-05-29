@@ -26,7 +26,7 @@ jobs:
         nix_path: nixpkgs=channel:nixpkgs-unstable
 
     - name: Checkout repository
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
 
     - name: Update flake.lock
       run: nix flake update
@@ -37,7 +37,7 @@ jobs:
         git diff --oneline --graph > flake-update.diff
 
     - name: Upload diff artifact
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: "flake-update.diff"
         path: "flake-update.diff"
@@ -62,7 +62,7 @@ jobs:
         DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
 
     - name: Checkout repository
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         fetch-depth: 0
 
@@ -76,7 +76,7 @@ jobs:
         authToken: '${{ env.CACHIX_AUTH_TOKEN }}'
 
     - name: Download diff artifact
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: "flake-update.diff"
         path: "flake-update.diff"
@@ -104,12 +104,12 @@ jobs:
         DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
 
     - name: Checkout repository
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         fetch-depth: 0
 
     - name: Download diff artifact
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: "flake-update.diff"
         path: "flake-update.diff"
@@ -118,7 +118,7 @@ jobs:
       run: git apply flake-update.diff/flake-update.diff
 
     - name: Create pull request
-      uses: peter-evans/create-pull-request@v7
+      uses: peter-evans/create-pull-request@v8
       with:
         author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
         commit-message: "chore: update flake.lock"

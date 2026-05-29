@@ -35,7 +35,7 @@ jobs:
         nix_path: nixpkgs=channel:nixpkgs-unstable
 
     - name: Checkout repository
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
 
     - name: Create commit message
       id: commit-message
@@ -59,20 +59,20 @@ jobs:
         fi
 
     - name: Upload skip artifact
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: "${{ matrix.package }}-skipped.artifact"
         path: "${{ matrix.package }}-skipped.artifact"
 
     - name: Upload diff artifact
       if: ${{ steps.diff.outputs.skipped == 'no' }}
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: "${{ matrix.package }}-update.diff"
         path: "${{ matrix.package }}-update.diff"
 
     - name: Upload commit artifact
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: "${{ matrix.package }}-commit.artifact"
         path: "${{ matrix.package }}-commit.artifact"
@@ -111,7 +111,7 @@ jobs:
         DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
 
     - name: Checkout repository
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         fetch-depth: 0
 
@@ -126,7 +126,7 @@ jobs:
         pushFilter: '(-source$|-src$|\.tar\.gz$|\.patch$)'
 
     - name: Download diff artifact
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: "${{ matrix.package }}-update.diff"
         path: "${{ matrix.package }}-update.diff"
@@ -160,7 +160,7 @@ jobs:
         echo "yes" >> "${{ matrix.package }}-${{ matrix.nixpkgs }}-success.artifact"
 
     - name: Upload success artifact
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       if: steps.build.outcome == 'success'
       with:
         name: "${{ matrix.package }}-${{ matrix.nixpkgs }}-success.artifact"
@@ -192,33 +192,33 @@ jobs:
       env:
         DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
 
-    - uses: actions/download-artifact@v6
+    - uses: actions/download-artifact@v7
       with:
         name: "${{ matrix.package }}-nixos-unstable-success.artifact"
         path: "${{ matrix.package }}-nixos-unstable-success.artifact"
 
-    # - uses: actions/download-artifact@v6
+    # - uses: actions/download-artifact@v7
     #   with:
     #     name: "${{ matrix.package }}-nixpkgs-unstable-success.artifact"
     #     path: "${{ matrix.package }}-nixpkgs-unstable-success.artifact"
 
-    - uses: actions/download-artifact@v6
+    - uses: actions/download-artifact@v7
       with:
         name: "${{ matrix.package }}-nixos-25.11-success.artifact"
         path: "${{ matrix.package }}-nixos-25.11-success.artifact"
 
-    - uses: actions/download-artifact@v6
+    - uses: actions/download-artifact@v7
       with:
         name: "${{ matrix.package }}-pinned-success.artifact"
         path: "${{ matrix.package }}-pinned-success.artifact"
 
     - name: Checkout repository
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         fetch-depth: 0
 
     - name: Download diff artifact
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: "${{ matrix.package }}-update.diff"
         path: "${{ matrix.package }}-update.diff"
@@ -228,7 +228,7 @@ jobs:
         git apply "${{ matrix.package }}-update.diff/${{ matrix.package }}-update.diff"
 
     - name: Download commit artifact
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: "${{ matrix.package }}-commit.artifact"
         path: "${{ matrix.package }}-commit.artifact"
@@ -237,7 +237,7 @@ jobs:
         echo "commit-message=$(cat ${{ matrix.package }}-commit.artifact/${{ matrix.package }}-commit.artifact)" >> $GITHUB_ENV
 
     - name: Create pull request
-      uses: peter-evans/create-pull-request@v7
+      uses: peter-evans/create-pull-request@v8
       with:
         author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
         commit-message: ${{ env.commit-message }}
